@@ -20,12 +20,12 @@ public class Board extends JPanel implements ActionListener {
     private final int board_width_in_pixels = 300;
     private final int board_height_in_pixels = 300;
     private final int dot_size_in_pixels = 10;
-    private final int max_number_of_dots = 900; // 900= (300*300)/(10*10)
+    private final int max_snake_length = 900; // 900 = 30 dots(x-axis) * 30 dots (y-axis) = max. possible length of the snake
     private final int remaining_possible_tiles = 29;
     private final int refreshrate_in_ms = 100;
 
-    private final int x[] = new int[max_number_of_dots];
-    private final int y[] = new int[max_number_of_dots];
+    private final int x[] = new int[max_snake_length];
+    private final int y[] = new int[max_snake_length];
 
     private int dots;
     private int apple_x;

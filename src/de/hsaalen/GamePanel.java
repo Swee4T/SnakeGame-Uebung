@@ -18,7 +18,7 @@ import javax.swing.Timer;
 public class GamePanel extends JPanel implements ActionListener 
 {
     public final int tile_size_in_pixels = 10;
-    public final int game_loop_duration_in_ms = 140;
+    public final int game_loop_duration_in_ms = 100;
 
 	private Game game;
 

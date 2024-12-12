@@ -10,22 +10,22 @@ public class IntPair {
         this.y = y;
     }
 
-    public void move (Direction direction, int dot_size_in_pixels) {
+    public void move (Direction direction) {
         switch(direction) {
             case Direction.left:
-                x -= dot_size_in_pixels;
+                x -= 1;
                 break;
 
             case Direction.right:
-                x += dot_size_in_pixels;
+                x += 1;
                 break;
 
             case Direction.up:
-                y -= dot_size_in_pixels;
+                y -= 1;
                 break;
 
             case Direction.down:
-                y += dot_size_in_pixels;
+                y += 1;
         }
     }
 

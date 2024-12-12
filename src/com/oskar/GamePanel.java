@@ -17,8 +17,8 @@ import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener {
 
-    public final int width_in_pixels = 300;
-    public final int height_in_pixels = 300;
+    public final int width_in_dots = 30;
+    public final int height_in_dots = 30;
     public final int dot_size_in_pixels = 10;
     public final int refreshrate_in_ms = 100;
     public final int initial_snake_size = 3;
@@ -45,7 +45,7 @@ public class GamePanel extends JPanel implements ActionListener {
         setBackground(Color.black);
         setFocusable(true);
 
-        setPreferredSize(new Dimension(width_in_pixels, height_in_pixels)); // needed?
+        setPreferredSize(new Dimension(width_in_pixels(), height_in_pixels()));
         loadImages();
         initGame();
     }
@@ -95,16 +95,21 @@ public class GamePanel extends JPanel implements ActionListener {
     }
     
     private void doDrawing(Graphics g) {
-        
-        if (inGame) {
-
-            g.drawImage(apple, apple_x, apple_y, this);
-
-            for (int i = 0; i < snake.length(); i++) {
-                if (i == 0) {
-                    g.drawImage(head, snake.position(i).x, snake.position(i).y, this);
-                } else {
-                    g.drawImage(ball, snake.position(i).x, snake.position(i).y, this);
+        if (inGame) 
+		{
+			IntPair apple_position = new IntPair( apple_x, apple_y);
+			IntPair apple_position_in_pixels = pixel_position_of_tile( apple_position );
+			
+            g.drawImage(apple, apple_position_in_pixels.x, apple_position_in_pixels.y, this);
+            for (int i = 0; i < snake.length(); i++) 
+			{
+				IntPair position_in_pixels = pixel_position_of_tile( snake.position(i) );
+                if (i == 0) 
+				{
+                    g.drawImage(head, position_in_pixels.x, position_in_pixels.y, this);
+                } else 
+				{
+                    g.drawImage(ball, position_in_pixels.x, position_in_pixels.y, this);
                 }
             }
 
@@ -124,7 +129,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
         g.setColor(Color.white);
         g.setFont(small);
-        g.drawString(msg, (width_in_pixels - metr.stringWidth(msg)) / 2, height_in_pixels / 2);
+        g.drawString(msg, (width_in_pixels() - metr.stringWidth(msg)) / 2, height_in_pixels() / 2);
     }
 
     private void checkApple() {
@@ -141,7 +146,7 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     private void checkCollision() {
-        if (snake.is_snake_colliding(width_in_pixels, height_in_pixels)) {
+        if (snake.is_snake_colliding(width_in_dots, height_in_dots)) {
             inGame = false;
         }
         

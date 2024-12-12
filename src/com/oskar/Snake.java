@@ -8,7 +8,7 @@ public class Snake {
     List<IntPair> positions;
     int dot_size_in_pixels;
 
-    public Snake( int initial_snake_size, int dot_size_in_pixels) {
+    public Snake( int initial_snake_size) {
         positions = new LinkedList<IntPair>();
     }
 

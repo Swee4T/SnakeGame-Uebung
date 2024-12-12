@@ -1,0 +1,1 @@
+java -cp src com.zetcode.Snake

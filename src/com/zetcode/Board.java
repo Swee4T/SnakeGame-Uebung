@@ -17,13 +17,15 @@ import javax.swing.Timer;
 
 public class Board extends JPanel implements ActionListener {
 
-    private final int board_width_in_pixels = 300;
-    private final int board_height_in_pixels = 300;
-    private final int dot_size_in_pixels = 10;
+    public final int board_width_in_pixels = 300;
+    public final int board_height_in_pixels = 300;
+    public final int dot_size_in_pixels = 10;
+    public final int refreshrate_in_ms = 100;
+    public final int initial_snake_size = 3;
+
     private final int max_snake_length = 900; // 900 = 30 dots(x-axis) * 30 dots (y-axis) = max. possible length of the snake
     private final int remaining_possible_tiles = 29;
-    private final int refreshrate_in_ms = 100;
-    public final int initial_snake_size = 3;
+
 
     private final int x[] = new int[max_snake_length];
     private final int y[] = new int[max_snake_length];
@@ -71,11 +73,6 @@ public class Board extends JPanel implements ActionListener {
         head = iih.getImage();
     }
 
-    public void start_game_loop_timer() {
-        timer = new Timer(refreshrate_in_ms, this);
-        timer.start();
-    }
-
     public void set_start_pos_of_snake() {
         current_snake_size = initial_snake_size;
 
@@ -84,6 +81,20 @@ public class Board extends JPanel implements ActionListener {
                 y[z] = 50;
             }
     }
+
+    public void start_game_loop_timer() {
+        timer = new Timer(refreshrate_in_ms, this);
+        timer.start();
+    }
+
+    public void set_apple_at_new_random_position() {
+
+        int r = (int) (Math.random() * remaining_possible_tiles);
+        apple_x = ((r * dot_size_in_pixels));
+
+        r = (int) (Math.random() * remaining_possible_tiles);
+        apple_y = ((r * dot_size_in_pixels));
+    }    
 
     private void initGame() {
 
@@ -195,15 +206,6 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
-    private void set_apple_at_new_random_position() {
-
-        int r = (int) (Math.random() * remaining_possible_tiles);
-        apple_x = ((r * dot_size_in_pixels));
-
-        r = (int) (Math.random() * remaining_possible_tiles);
-        apple_y = ((r * dot_size_in_pixels));
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -248,5 +250,33 @@ public class Board extends JPanel implements ActionListener {
                 leftDirection = false;
             }
         }
+    }
+
+        // ==========================================
+    // Test-Helper Methods - only used for Unit Tests
+    // ==========================================
+    
+    public int getSnakeX(int index) {
+        return x[index];
+    }
+
+    public int getSnakeY(int index) {
+        return y[index];
+    }
+
+    public int getCurrentSnakeSize() {
+        return current_snake_size;
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public int getAppleX() {
+        return apple_x;
+    }
+
+    public int getAppleY() {
+        return apple_y;
     }
 }

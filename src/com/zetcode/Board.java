@@ -22,7 +22,7 @@ public class Board extends JPanel implements ActionListener {
     private final int dot_size_in_pixels = 10;
     private final int max_number_of_dots = 900; // 900= (300*300)/(10*10)
     private final int remaining_possible_tiles = 29;
-    private final int DELAY = 140;
+    private final int refreshrate_in_ms = 100;
 
     private final int x[] = new int[max_number_of_dots];
     private final int y[] = new int[max_number_of_dots];
@@ -81,7 +81,7 @@ public class Board extends JPanel implements ActionListener {
         
         set_apple_at_new_random_position();
 
-        timer = new Timer(DELAY, this);
+        timer = new Timer(refreshrate_in_ms, this);
         timer.start();
     }
 

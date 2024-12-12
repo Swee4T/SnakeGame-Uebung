@@ -17,7 +17,7 @@ public class IntPair {
                 break;
 
             case Direction.right:
-                x += dot_size_in_pixels:
+                x += dot_size_in_pixels;
                 break;
 
             case Direction.up:

@@ -15,49 +15,37 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class Board extends JPanel implements ActionListener {
+public class GamePanel extends JPanel implements ActionListener {
 
-    public final int board_width_in_pixels = 300;
-    public final int board_height_in_pixels = 300;
+    public final int width_in_pixels = 300;
+    public final int height_in_pixels = 300;
     public final int dot_size_in_pixels = 10;
     public final int refreshrate_in_ms = 100;
     public final int initial_snake_size = 3;
 
     private final int max_snake_length = 900; // 900 = 30 dots(x-axis) * 30 dots (y-axis) = max. possible length of the snake
-    private final int remaining_possible_tiles = 29;
+    public final int remaining_possible_tiles = 29;
 
     public Snake snake;
-    private final int x[] = new int[max_snake_length];
-    private final int y[] = new int[max_snake_length];
 
     private int current_snake_size;
     private int apple_x;
     private int apple_y;
 
     private Direction direction = Direction.right;
-    private boolean leftDirection = false;
-    private boolean rightDirection = true;
-    private boolean upDirection = false;
-    private boolean downDirection = false;
-    private boolean inGame = true;
 
     private Timer timer;
     private Image ball;
     private Image apple;
     private Image head;
 
-    public Board() {
-        
-        initBoard();
-    }
-    
-    private void initBoard() {
 
+    public GamePanel() {
         addKeyListener(new TAdapter());
         setBackground(Color.black);
         setFocusable(true);
 
-        setPreferredSize(new Dimension(board_width_in_pixels, board_height_in_pixels));
+        setPreferredSize(new Dimension(width_in_pixels, height_in_pixels)); // needed?
         loadImages();
         initGame();
     }
@@ -136,12 +124,12 @@ public class Board extends JPanel implements ActionListener {
 
         g.setColor(Color.white);
         g.setFont(small);
-        g.drawString(msg, (board_width_in_pixels - metr.stringWidth(msg)) / 2, board_height_in_pixels / 2);
+        g.drawString(msg, (width_in_pixels - metr.stringWidth(msg)) / 2, height_in_pixels / 2);
     }
 
     private void checkApple() {
 
-        if ((snake.head_position().x == apple_x &&) (snake.head_position().y == apple_y)) {
+        if ((snake.head_position().x == apple_x ) && (snake.head_position().y == apple_y)) {
             snake.grow( direction);
             set_apple_at_new_random_position();
         }
@@ -153,7 +141,7 @@ public class Board extends JPanel implements ActionListener {
     }
 
     private void checkCollision() {
-        if (snake.is_snake_colliding(board_width_in_pixels, board_height_in_pixels)) {
+        if (snake.is_snake_colliding(width_in_pixels, height_in_pixels)) {
             inGame = false;
         }
         

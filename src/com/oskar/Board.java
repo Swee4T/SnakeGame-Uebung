@@ -26,6 +26,7 @@ public class Board extends JPanel implements ActionListener {
     private final int max_snake_length = 900; // 900 = 30 dots(x-axis) * 30 dots (y-axis) = max. possible length of the snake
     private final int remaining_possible_tiles = 29;
 
+    public Snake snake;
     private final int x[] = new int[max_snake_length];
     private final int y[] = new int[max_snake_length];
 
@@ -33,6 +34,7 @@ public class Board extends JPanel implements ActionListener {
     private int apple_x;
     private int apple_y;
 
+    private Direction direction = Direction.right;
     private boolean leftDirection = false;
     private boolean rightDirection = true;
     private boolean upDirection = false;
@@ -73,12 +75,7 @@ public class Board extends JPanel implements ActionListener {
     }
 
     public void set_start_pos_of_snake() {
-        current_snake_size = initial_snake_size;
-
-            for (int z = 0; z < current_snake_size; z++) {
-                x[z] = 50 - z * 10;
-                y[z] = 50;
-            }
+        snake = new Snake( 3, dot_size_in_pixels);
     }
 
     public void start_game_loop_timer() {
@@ -115,11 +112,11 @@ public class Board extends JPanel implements ActionListener {
 
             g.drawImage(apple, apple_x, apple_y, this);
 
-            for (int z = 0; z < current_snake_size; z++) {
-                if (z == 0) {
-                    g.drawImage(head, x[z], y[z], this);
+            for (int i = 0; i < snake.length(); i++) {
+                if (i == 0) {
+                    g.drawImage(head, snake.position(i).x, snake.position(i).y, this);
                 } else {
-                    g.drawImage(ball, x[z], y[z], this);
+                    g.drawImage(ball, snake.position(i).x, snake.position(i).y, this);
                 }
             }
 
@@ -134,7 +131,7 @@ public class Board extends JPanel implements ActionListener {
     private void gameOver(Graphics g) {
         
         String msg = "Game Over";
-        Font small = new Font("Helvetica", Font.BOLD, 14);
+        Font small = new Font("Helvetica", Font.BOLD, 18);
         FontMetrics metr = getFontMetrics(small);
 
         g.setColor(Color.white);
@@ -144,59 +141,19 @@ public class Board extends JPanel implements ActionListener {
 
     private void checkApple() {
 
-        if ((x[0] == apple_x) && (y[0] == apple_y)) {
-
-            current_snake_size++;
+        if ((snake.head_position().x == apple_x &&) (snake.head_position().y == apple_y)) {
+            snake.grow( direction);
             set_apple_at_new_random_position();
         }
     }
 
+
     private void move() {
-
-        for (int z = current_snake_size; z > 0; z--) {
-            x[z] = x[(z - 1)];
-            y[z] = y[(z - 1)];
-        }
-
-        if (leftDirection) {
-            x[0] -= dot_size_in_pixels;
-        }
-
-        if (rightDirection) {
-            x[0] += dot_size_in_pixels;
-        }
-
-        if (upDirection) {
-            y[0] -= dot_size_in_pixels;
-        }
-
-        if (downDirection) {
-            y[0] += dot_size_in_pixels;
-        }
+        snake.move( direction );
     }
 
     private void checkCollision() {
-
-        for (int z = current_snake_size; z > 0; z--) {
-
-            if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
-                inGame = false;
-            }
-        }
-
-        if (y[0] >= board_height_in_pixels) {
-            inGame = false;
-        }
-
-        if (y[0] < 0) {
-            inGame = false;
-        }
-
-        if (x[0] >= board_width_in_pixels) {
-            inGame = false;
-        }
-
-        if (x[0] < 0) {
+        if (snake.is_snake_colliding(board_width_in_pixels, board_height_in_pixels)) {
             inGame = false;
         }
         
@@ -204,6 +161,7 @@ public class Board extends JPanel implements ActionListener {
             timer.stop();
         }
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -225,57 +183,18 @@ public class Board extends JPanel implements ActionListener {
 
             int key = e.getKeyCode();
 
-            if ((key == KeyEvent.VK_LEFT) && (!rightDirection)) {
-                leftDirection = true;
-                upDirection = false;
-                downDirection = false;
-            }
+            if ( key == KeyEvent.VK_LEFT )
+				direction = Direction.left;
+			
+            if ( key == KeyEvent.VK_RIGHT )
+				direction = Direction.right;
+			
+            if ( key == KeyEvent.VK_UP )
+				direction = Direction.up;
+			
+            if ( key == KeyEvent.VK_DOWN )
+				direction = Direction.down;
 
-            if ((key == KeyEvent.VK_RIGHT) && (!leftDirection)) {
-                rightDirection = true;
-                upDirection = false;
-                downDirection = false;
-            }
-
-            if ((key == KeyEvent.VK_UP) && (!downDirection)) {
-                upDirection = true;
-                rightDirection = false;
-                leftDirection = false;
-            }
-
-            if ((key == KeyEvent.VK_DOWN) && (!upDirection)) {
-                downDirection = true;
-                rightDirection = false;
-                leftDirection = false;
-            }
         }
-    }
-
-        // ==========================================
-    // Test-Helper Methods - only used for Unit Tests
-    // ==========================================
-    
-    public int getSnakeX(int index) {
-        return x[index];
-    }
-
-    public int getSnakeY(int index) {
-        return y[index];
-    }
-
-    public int getCurrentSnakeSize() {
-        return current_snake_size;
-    }
-
-    public Timer getTimer() {
-        return timer;
-    }
-
-    public int getAppleX() {
-        return apple_x;
-    }
-
-    public int getAppleY() {
-        return apple_y;
     }
 }

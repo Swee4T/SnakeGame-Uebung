@@ -13,7 +13,7 @@ public class Snake extends JFrame {
             positions = new LinkedList<IntPair>();
         }
 
-        public void set_apple_at_new_random_position( int initial_snake_size) {
+        public void set_start_position( int initial_snake_size) {
             for (int i = 0; i < initial_snake_size; i++) {
                 int x = 50 - i * 10;
                 int y = 50;
@@ -22,6 +22,10 @@ public class Snake extends JFrame {
                 positions.add( new_position);
             }
         }
+
+    private void allocate_memory() {
+        positions = new LinkedList<IntPair>();
+    }
 
 	public void move( Direction direction )
 	{

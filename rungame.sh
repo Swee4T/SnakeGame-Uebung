@@ -1,1 +1,1 @@
-java -cp src com.zetcode.Snake
+java -cp src com.oskar.Snake

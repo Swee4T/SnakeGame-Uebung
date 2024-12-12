@@ -1,4 +1,4 @@
-package com.zetcode;
+package com.oskar;
 
 import static org.junit.Assert.*;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package com.zetcode;
+package com.oskar;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -25,7 +25,6 @@ public class Board extends JPanel implements ActionListener {
 
     private final int max_snake_length = 900; // 900 = 30 dots(x-axis) * 30 dots (y-axis) = max. possible length of the snake
     private final int remaining_possible_tiles = 29;
-
 
     private final int x[] = new int[max_snake_length];
     private final int y[] = new int[max_snake_length];

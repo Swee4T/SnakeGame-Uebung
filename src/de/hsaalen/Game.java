@@ -3,7 +3,7 @@ package de.hsaalen;
 public class Game 
 {
     private final GameBoard board;
-    private final Apple apple;
+    private Apple apple;  // nicht mehr final, da wir neue Äpfel erzeugen
     private final Score score;
     private final int initial_snake_size = 3;
         
@@ -14,9 +14,15 @@ public class Game
     public Game() 
     {
         this.board = new GameBoard(30, 30);
-        this.apple = new Apple(board.getWidth(), board.getHeight());
         this.score = new Score();
         place_snake_at_initial_location();
+        createNewRandomApple();
+    }
+    
+    private void createNewRandomApple() {
+        // 20% Chance für einen Super-Apfel
+        boolean isSuper = Math.random() < 0.2;
+        apple = new Apple(board.getWidth(), board.getHeight(), isSuper);
     }
     
     public void place_snake_at_initial_location() 
@@ -38,9 +44,13 @@ public class Game
     {
         if (apple.isColliding(snake.head_position())) 
         {
-            snake.grow(direction);
-            apple.placeAtRandom();
-            score.addPoints(10);
+            // Mehrfaches Wachstum für Super-Apfel
+            for(int i = 0; i < apple.getGrowthAmount(); i++) {
+                snake.grow(direction);
+            }
+            // Mehr Punkte für Super-Apfel
+            score.addPoints(apple.isSuper() ? 30 : 10);
+            createNewRandomApple();
         }
     }
 
@@ -60,6 +70,10 @@ public class Game
     
     public IntPair getApplePosition() {
         return apple.getPosition();
+    }
+    
+    public boolean isCurrentAppleSuper() {
+        return apple.isSuper();
     }
     
     public int getWidthInTiles() {

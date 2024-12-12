@@ -1,31 +1,34 @@
-package com.oskar;
+package de.hsaalen;
 
 import java.util.List;
 import java.util.LinkedList;
 
-
-public class Snake {
-    List<IntPair> positions;
-    int dot_size_in_pixels;
-
-    public Snake( int initial_snake_size) {
-        positions = new LinkedList<IntPair>();
+public class Snake 
+{
+	List<IntPair> positions;
+		
+	public Snake( int initial_snake_size ) 
+	{
+		allocate_memory();
+		place_at_initial_location( initial_snake_size );
     }
-
-    public void set_start_position( int initial_snake_size) {
-        for (int i = 0; i < initial_snake_size; i++) {
-            int x = 50 - i * 10;
-            int y = 50;
-
-            IntPair new_position = new IntPair(x,y);
-            positions.add( new_position);
-        }
-    }
-
-    private void allocate_memory() {
-        positions = new LinkedList<IntPair>();
-    }
-
+	
+	private void allocate_memory()
+	{
+		positions = new LinkedList<IntPair>();
+	}
+	
+	public void place_at_initial_location( int initial_snake_size ) 
+	{
+        for (int i = 0; i < initial_snake_size; i++) 
+		{
+            int x = 5 - i;
+            int y = 5;
+			IntPair new_position = new IntPair(x,y);
+			positions.add( new_position );
+        }		
+	}
+	
 	public void move( Direction direction )
 	{
 		for ( int i = length()-1; i > 0; i-- )
@@ -33,22 +36,24 @@ public class Snake {
 			position( i ).x = position( i-1 ).x;
 			position( i ).y = position( i-1 ).y;
         }
-		head_position().move( direction, dot_size_in_pixels );
+		head_position().move( direction );
  	}
 	
 	public void grow( Direction direction )
 	{
 		IntPair new_head_position = head_position().clone();
-		new_head_position.move( direction, dot_size_in_pixels );
+		new_head_position.move( direction );
 		positions.add( 0, new_head_position );
  	}
 	
-	public boolean is_snake_colliding( int width_in_pixels, int height_in_pixels )
+	public boolean is_snake_colliding( int board_width_in_tiles, int board_height_in_tiles )
 	{
 		if ( is_colliding_with_itself() )
-			return true;		
-		if ( is_outside_board( width_in_pixels, height_in_pixels ) )
 			return true;			
+
+		if ( is_outside_board( board_width_in_tiles, board_height_in_tiles ) )
+			return true;			
+
 		return false;
 	}
 
@@ -63,15 +68,15 @@ public class Snake {
 		return false;
  	}
 
-	public boolean is_outside_board( int width_in_pixels, int height_in_pixels )
+	public boolean is_outside_board( int board_width_in_tiles, int board_height_in_tiles )
 	{
 		if ( head_position().x < 0 )
 			return true;
-		if ( head_position().x >= width_in_pixels )
+		if ( head_position().x >= board_width_in_tiles )
 			return true;
 		if ( head_position().y < 0 )
 			return true;
-		if ( head_position().y >= height_in_pixels )
+		if ( head_position().y >= board_height_in_tiles )
 			return true;
 		return false;
 	}
@@ -96,4 +101,5 @@ public class Snake {
 		String result = "Snake" + positions.toString();
 		return result;
 	}
+
 }

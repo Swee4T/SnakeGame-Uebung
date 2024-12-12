@@ -1,8 +1,8 @@
 package de.hsaalen;
 
 import java.awt.*;
-import javax.swing.*;
 import java.awt.image.BufferedImage;
+import javax.swing.*;
 import java.awt.event.*;
 
 public class GamePanel extends JPanel implements ActionListener 
@@ -11,9 +11,10 @@ public class GamePanel extends JPanel implements ActionListener
 
     private Timer timer;
     private Image apple;
-    private Image superApple;  // Neues Image
+    private Image superApple;
     private Image head;
     private Image ball;
+    private Image obstacleImg;
     
     public final int tile_size_in_pixels = 10;
     private final int game_loop_duration_in_ms = 140;
@@ -41,30 +42,14 @@ public class GamePanel extends JPanel implements ActionListener
     {
         ImageIcon imageIconApple = new ImageIcon("src/resources/apple.png");
         apple = imageIconApple.getImage().getScaledInstance(tile_size_in_pixels, tile_size_in_pixels, Image.SCALE_SMOOTH);
-
-        // Super-Apfel wird rot eingefärbt
-        Image origApple = imageIconApple.getImage();
-        superApple = createRedTintedImage(origApple);
+        superApple = imageIconApple.getImage().getScaledInstance(tile_size_in_pixels + 4, tile_size_in_pixels + 4, Image.SCALE_SMOOTH);
 
         ImageIcon imageIconHead = new ImageIcon("src/resources/head.png");
         head = imageIconHead.getImage().getScaledInstance(tile_size_in_pixels, tile_size_in_pixels, Image.SCALE_SMOOTH);
 
         ImageIcon imageIconDot = new ImageIcon("src/resources/dot.png");
         ball = imageIconDot.getImage().getScaledInstance(tile_size_in_pixels, tile_size_in_pixels, Image.SCALE_SMOOTH);
-    }
-
-    private Image createRedTintedImage(Image original) {
-        // Erstelle eine rötliche Version des Apfels für den Super-Apfel
-        int w = tile_size_in_pixels;
-        int h = tile_size_in_pixels;
-        BufferedImage tinted = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = tinted.createGraphics();
-        g2d.drawImage(original, 0, 0, w, h, null);
-        g2d.setComposite(AlphaComposite.SrcAtop.derive(0.3f));
-        g2d.setColor(Color.RED);
-        g2d.fillRect(0, 0, w, h);
-        g2d.dispose();
-        return tinted;
+        obstacleImg = imageIconDot.getImage().getScaledInstance(tile_size_in_pixels, tile_size_in_pixels, Image.SCALE_SMOOTH);
     }
 
     private void initGame() 
@@ -79,6 +64,7 @@ public class GamePanel extends JPanel implements ActionListener
         super.paintComponent(g);
         if (game.inGame)
         {
+            drawObstacles(g);
             drawApple(g);
             drawSnake(g);
         }
@@ -88,6 +74,13 @@ public class GamePanel extends JPanel implements ActionListener
         }
 
         Toolkit.getDefaultToolkit().sync();
+    }
+
+    private void drawObstacles(Graphics g) {
+        for(Obstacle obstacle : game.getObstacles()) {
+            IntPair pos = pixel_position_of_tile(obstacle.getPosition());
+            g.drawImage(obstacleImg, pos.x, pos.y, this);
+        }
     }
 
     private void drawApple(Graphics g) 

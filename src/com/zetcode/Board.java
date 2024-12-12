@@ -17,8 +17,8 @@ import javax.swing.Timer;
 
 public class Board extends JPanel implements ActionListener {
 
-    private final int board_width = 300;
-    private final int board_height = 300;
+    private final int board_width_in_pixels = 300;
+    private final int board_height_in_pixels = 300;
     private final int DOT_SIZE = 10;
     private final int ALL_DOTS = 900;
     private final int RAND_POS = 29;
@@ -53,7 +53,7 @@ public class Board extends JPanel implements ActionListener {
         setBackground(Color.black);
         setFocusable(true);
 
-        setPreferredSize(new Dimension(board_width, board_height));
+        setPreferredSize(new Dimension(board_width_in_pixels, board_height_in_pixels));
         loadImages();
         initGame();
     }
@@ -122,7 +122,7 @@ public class Board extends JPanel implements ActionListener {
 
         g.setColor(Color.white);
         g.setFont(small);
-        g.drawString(msg, (board_width - metr.stringWidth(msg)) / 2, board_height / 2);
+        g.drawString(msg, (board_width_in_pixels - metr.stringWidth(msg)) / 2, board_height_in_pixels / 2);
     }
 
     private void checkApple() {
@@ -167,7 +167,7 @@ public class Board extends JPanel implements ActionListener {
             }
         }
 
-        if (y[0] >= board_height) {
+        if (y[0] >= board_height_in_pixels) {
             inGame = false;
         }
 
@@ -175,7 +175,7 @@ public class Board extends JPanel implements ActionListener {
             inGame = false;
         }
 
-        if (x[0] >= board_width) {
+        if (x[0] >= board_width_in_pixels) {
             inGame = false;
         }
 

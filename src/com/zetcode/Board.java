@@ -19,13 +19,13 @@ public class Board extends JPanel implements ActionListener {
 
     private final int board_width_in_pixels = 300;
     private final int board_height_in_pixels = 300;
-    private final int tile_size_in_pixels = 10;
-    private final int ALL_DOTS = 900;
-    private final int RAND_POS = 29;
+    private final int dot_size_in_pixels = 10;
+    private final int max_number_of_dots = 900; // 900= (300*300)/(10*10)
+    private final int remaining_possible_tiles = 29;
     private final int DELAY = 140;
 
-    private final int x[] = new int[ALL_DOTS];
-    private final int y[] = new int[ALL_DOTS];
+    private final int x[] = new int[max_number_of_dots];
+    private final int y[] = new int[max_number_of_dots];
 
     private int dots;
     private int apple_x;
@@ -142,19 +142,19 @@ public class Board extends JPanel implements ActionListener {
         }
 
         if (leftDirection) {
-            x[0] -= tile_size_in_pixels;
+            x[0] -= dot_size_in_pixels;
         }
 
         if (rightDirection) {
-            x[0] += tile_size_in_pixels;
+            x[0] += dot_size_in_pixels;
         }
 
         if (upDirection) {
-            y[0] -= tile_size_in_pixels;
+            y[0] -= dot_size_in_pixels;
         }
 
         if (downDirection) {
-            y[0] += tile_size_in_pixels;
+            y[0] += dot_size_in_pixels;
         }
     }
 
@@ -190,11 +190,11 @@ public class Board extends JPanel implements ActionListener {
 
     private void locateApple() {
 
-        int r = (int) (Math.random() * RAND_POS);
-        apple_x = ((r * tile_size_in_pixels));
+        int r = (int) (Math.random() * remaining_possible_tiles);
+        apple_x = ((r * dot_size_in_pixels));
 
-        r = (int) (Math.random() * RAND_POS);
-        apple_y = ((r * tile_size_in_pixels));
+        r = (int) (Math.random() * remaining_possible_tiles);
+        apple_y = ((r * dot_size_in_pixels));
     }
 
     @Override

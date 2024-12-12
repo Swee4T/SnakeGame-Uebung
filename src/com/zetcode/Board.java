@@ -79,7 +79,7 @@ public class Board extends JPanel implements ActionListener {
             y[z] = 50;
         }
         
-        locateApple();
+        set_apple_at_new_random_position();
 
         timer = new Timer(DELAY, this);
         timer.start();
@@ -130,7 +130,7 @@ public class Board extends JPanel implements ActionListener {
         if ((x[0] == apple_x) && (y[0] == apple_y)) {
 
             dots++;
-            locateApple();
+            set_apple_at_new_random_position();
         }
     }
 
@@ -188,7 +188,7 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
-    private void locateApple() {
+    private void set_apple_at_new_random_position() {
 
         int r = (int) (Math.random() * remaining_possible_tiles);
         apple_x = ((r * dot_size_in_pixels));

@@ -23,11 +23,12 @@ public class Board extends JPanel implements ActionListener {
     private final int max_snake_length = 900; // 900 = 30 dots(x-axis) * 30 dots (y-axis) = max. possible length of the snake
     private final int remaining_possible_tiles = 29;
     private final int refreshrate_in_ms = 100;
+    public final int initial_snake_size = 3;
 
     private final int x[] = new int[max_snake_length];
     private final int y[] = new int[max_snake_length];
 
-    private int dots;
+    private int current_snake_size;
     private int apple_x;
     private int apple_y;
 
@@ -70,19 +71,25 @@ public class Board extends JPanel implements ActionListener {
         head = iih.getImage();
     }
 
-    private void initGame() {
-
-        dots = 3;
-
-        for (int z = 0; z < dots; z++) {
-            x[z] = 50 - z * 10;
-            y[z] = 50;
-        }
-        
-        set_apple_at_new_random_position();
-
+    public void start_game_loop_timer() {
         timer = new Timer(refreshrate_in_ms, this);
         timer.start();
+    }
+
+    public void set_start_pos_of_snake() {
+        current_snake_size = initial_snake_size;
+
+            for (int z = 0; z < current_snake_size; z++) {
+                x[z] = 50 - z * 10;
+                y[z] = 50;
+            }
+    }
+
+    private void initGame() {
+
+        set_start_pos_of_snake();
+        set_apple_at_new_random_position();
+        start_game_loop_timer();
     }
 
     @Override
@@ -98,7 +105,7 @@ public class Board extends JPanel implements ActionListener {
 
             g.drawImage(apple, apple_x, apple_y, this);
 
-            for (int z = 0; z < dots; z++) {
+            for (int z = 0; z < current_snake_size; z++) {
                 if (z == 0) {
                     g.drawImage(head, x[z], y[z], this);
                 } else {
@@ -129,14 +136,14 @@ public class Board extends JPanel implements ActionListener {
 
         if ((x[0] == apple_x) && (y[0] == apple_y)) {
 
-            dots++;
+            current_snake_size++;
             set_apple_at_new_random_position();
         }
     }
 
     private void move() {
 
-        for (int z = dots; z > 0; z--) {
+        for (int z = current_snake_size; z > 0; z--) {
             x[z] = x[(z - 1)];
             y[z] = y[(z - 1)];
         }
@@ -160,7 +167,7 @@ public class Board extends JPanel implements ActionListener {
 
     private void checkCollision() {
 
-        for (int z = dots; z > 0; z--) {
+        for (int z = current_snake_size; z > 0; z--) {
 
             if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
                 inGame = false;
